@@ -1,0 +1,453 @@
+<title>Acesso ao Exame</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #f6f7fb;
+    --surface: #ffffff;
+    --surface-2: #eef1fa;
+    --ink: #1a1d2b;
+    --ink-soft: #454a63;
+    --muted: #6b7191;
+    --line: #e2e5f0;
+    --accent: #1c2b6b;
+    --accent-ink: #ffffff;
+    --accent-soft: #dbe1f7;
+    --success: #2f7a5c;
+    --error: #a3392b;
+    --error-soft: #f6dfd8;
+    --shadow: 0 30px 60px -30px rgba(28, 43, 107, 0.18);
+    --radius-lg: 22px;
+    --radius-md: 12px;
+    --radius-sm: 8px;
+    color-scheme: light;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0a0d18;
+      --surface: #10142a;
+      --surface-2: #161b36;
+      --ink: #e9ebf6;
+      --ink-soft: #c3c7e2;
+      --muted: #8b91ba;
+      --line: #262c4c;
+      --accent: #5470e0;
+      --accent-ink: #0a0d18;
+      --accent-soft: #202a5e;
+      --success: #4fae8a;
+      --error: #e2897c;
+      --error-soft: #3a211c;
+      --shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
+      color-scheme: dark;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0a0d18;
+    --surface: #10142a;
+    --surface-2: #161b36;
+    --ink: #e9ebf6;
+    --ink-soft: #c3c7e2;
+    --muted: #8b91ba;
+    --line: #262c4c;
+    --accent: #5470e0;
+    --accent-ink: #0a0d18;
+    --accent-soft: #202a5e;
+    --success: #4fae8a;
+    --error: #e2897c;
+    --error-soft: #3a211c;
+    --shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100%;
+  }
+
+  body {
+    font-family: "Archivo", "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(16px, 4vw, 48px);
+  }
+
+  h1, h2, h3 {
+    font-family: "Fraunces", Georgia, "Times New Roman", serif;
+    font-weight: 600;
+    text-wrap: balance;
+    color: var(--accent);
+    margin: 0;
+  }
+
+  .stage {
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .card {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+
+  .panel {
+    padding: clamp(28px, 6vw, 48px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .unit-tag {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 18px;
+  }
+
+  .unit-tag .unit-name {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  .unit-tag .unit-cnes {
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+  }
+
+  .panel-head h2 {
+    font-size: clamp(24px, 2.6vw, 30px);
+    font-weight: 700;
+    line-height: 1.15;
+  }
+
+  .access-note {
+    margin: 12px 0 28px;
+    color: var(--muted);
+    font-size: 13.5px;
+    line-height: 1.6;
+    max-width: 42ch;
+  }
+
+  .access-note p {
+    margin: 0 0 10px;
+  }
+
+  .access-list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .access-list > div {
+    display: flex;
+    gap: 6px;
+  }
+
+  .access-list dt {
+    margin: 0;
+    font-weight: 700;
+    color: var(--ink-soft);
+  }
+
+  .access-list dd {
+    margin: 0;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  label {
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .input-shell {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  input {
+    width: 100%;
+    font: inherit;
+    font-size: 15px;
+    color: var(--ink);
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-variant-numeric: tabular-nums;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  input::placeholder {
+    color: var(--muted);
+    opacity: 0.8;
+  }
+
+  input:focus-visible {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .field[data-invalid="true"] input {
+    border-color: var(--error);
+    background: var(--error-soft);
+  }
+
+  .error-text {
+    display: none;
+    font-size: 12.5px;
+    color: var(--error);
+  }
+
+  .field[data-invalid="true"] .error-text {
+    display: block;
+  }
+
+  .submit {
+    margin-top: 6px;
+    appearance: none;
+    border: 2px solid var(--accent);
+    background: var(--surface);
+    color: var(--accent);
+    font: inherit;
+    font-weight: 700;
+    font-size: 15px;
+    padding: 11px 18px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .submit:hover { background: var(--accent-soft); }
+  .submit:active { transform: translateY(1px); }
+  .submit:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .success {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 2px;
+  }
+
+  .success.is-visible { display: flex; }
+
+  .success-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--success);
+    color: var(--accent-ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .success h3 { font-size: 20px; }
+  .success p { margin: 0; color: var(--muted); font-size: 14.5px; line-height: 1.55; }
+
+  .status-note {
+    width: 100%;
+    background: var(--accent-soft);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+  }
+
+  .status-note p {
+    margin: 0;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 15.5px;
+    line-height: 1.4;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+
+  @media (max-width: 520px) {
+    .field-row { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="stage">
+  <div class="card">
+    <div class="panel">
+      <div id="panel-acesso">
+        <div class="panel-head">
+          <div class="unit-tag">
+            <span class="unit-name">Agora Tem Especialistas — Unidade Móvel 121</span>
+            <span class="unit-cnes">CNES: 8496234</span>
+          </div>
+          <h2>Acesse o resultado dos seus exames</h2>
+          <div class="access-note">
+            <p>Para acessar seu exame, complete os campos abaixo:</p>
+            <dl class="access-list">
+              <div><dt>Login:</dt><dd>CPF</dd></div>
+              <div><dt>Senha:</dt><dd>Data de nascimento (00/00/0000)</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <form id="form-acesso" novalidate>
+          <div class="field-row">
+            <div class="field" data-field="acesso-cpf">
+              <label for="acesso-cpf">Login</label>
+              <div class="input-shell">
+                <input type="text" id="acesso-cpf" name="cpf" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" maxlength="14" required>
+              </div>
+              <span class="error-text">Informe um CPF válido.</span>
+            </div>
+
+            <div class="field" data-field="acesso-nascimento">
+              <label for="acesso-nascimento">Senha</label>
+              <div class="input-shell">
+                <input type="text" id="acesso-nascimento" name="nascimento" inputmode="numeric" autocomplete="off" placeholder="DD/MM/AAAA" maxlength="10" required>
+              </div>
+              <span class="error-text">Informe uma data de nascimento válida.</span>
+            </div>
+          </div>
+
+          <button type="submit" class="submit">Acessar exame</button>
+        </form>
+
+        <div class="success" id="success-acesso">
+          <div class="success-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <h3>Dados validados</h3>
+            <p>CPF e data de nascimento confirmados com sucesso.</p>
+          </div>
+          <div class="status-note">
+            <p>Resultado de exame ainda não disponível.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  function setInvalid(fieldEl, invalid) {
+    fieldEl.setAttribute("data-invalid", invalid ? "true" : "false");
+  }
+
+  function fieldOf(input) {
+    return input.closest(".field");
+  }
+
+  // ---------- CPF mask + validation ----------
+  var cpfInput = document.getElementById("acesso-cpf");
+  cpfInput.addEventListener("input", function () {
+    var digits = cpfInput.value.replace(/\D/g, "").slice(0, 11);
+    var out = digits;
+    if (digits.length > 9) out = digits.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/, "$1.$2.$3-$4");
+    else if (digits.length > 6) out = digits.replace(/(\d{3})(\d{3})(\d{1,3})/, "$1.$2.$3");
+    else if (digits.length > 3) out = digits.replace(/(\d{3})(\d{1,3})/, "$1.$2");
+    cpfInput.value = out;
+  });
+
+  function isValidCPF(value) {
+    var d = value.replace(/\D/g, "");
+    if (d.length !== 11 || /^(\d)\1{10}$/.test(d)) return false;
+    function digit(len) {
+      var sum = 0;
+      for (var i = 0; i < len; i++) sum += parseInt(d.charAt(i), 10) * (len + 1 - i);
+      var r = (sum * 10) % 11;
+      return r === 10 ? 0 : r;
+    }
+    return digit(9) === parseInt(d.charAt(9), 10) && digit(10) === parseInt(d.charAt(10), 10);
+  }
+
+  // ---------- date mask + validation ----------
+  var dobInput = document.getElementById("acesso-nascimento");
+  dobInput.addEventListener("input", function () {
+    var digits = dobInput.value.replace(/\D/g, "").slice(0, 8);
+    var out = digits;
+    if (digits.length > 4) out = digits.replace(/(\d{2})(\d{2})(\d{1,4})/, "$1/$2/$3");
+    else if (digits.length > 2) out = digits.replace(/(\d{2})(\d{1,2})/, "$1/$2");
+    dobInput.value = out;
+  });
+
+  function isValidDOB(value) {
+    var m = value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (!m) return false;
+    var day = parseInt(m[1], 10), month = parseInt(m[2], 10), year = parseInt(m[3], 10);
+    var d = new Date(year, month - 1, day);
+    if (d.getFullYear() !== year || d.getMonth() !== month - 1 || d.getDate() !== day) return false;
+    var now = new Date();
+    var minYear = now.getFullYear() - 120;
+    if (year < minYear) return false;
+    if (d.getTime() > now.getTime()) return false;
+    return true;
+  }
+
+  // ---------- form ----------
+  var formAcesso = document.getElementById("form-acesso");
+  var successAcesso = document.getElementById("success-acesso");
+
+  formAcesso.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var ok = true;
+
+    if (!isValidCPF(cpfInput.value)) { setInvalid(fieldOf(cpfInput), true); ok = false; }
+    else setInvalid(fieldOf(cpfInput), false);
+
+    if (!isValidDOB(dobInput.value)) { setInvalid(fieldOf(dobInput), true); ok = false; }
+    else setInvalid(fieldOf(dobInput), false);
+
+    if (ok) {
+      formAcesso.style.display = "none";
+      successAcesso.classList.add("is-visible");
+    } else {
+      var firstInvalid = formAcesso.querySelector('[data-invalid="true"] input');
+      if (firstInvalid) firstInvalid.focus();
+    }
+  });
+})();
+</script>

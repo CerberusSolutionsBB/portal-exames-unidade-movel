@@ -1,0 +1,2 @@
+[     741ms] [WARNING] [Vue warn]: [Vuetify UPGRADE] 'theme.global.name.value = cerberusLight' is deprecated, use 'theme.change('cerberusLight')' instead. 
+  at <App> @ http://localhost:5173/node_modules/.vite/deps/chunk-R24LC5CB.js?v=2621c2a3:2229
