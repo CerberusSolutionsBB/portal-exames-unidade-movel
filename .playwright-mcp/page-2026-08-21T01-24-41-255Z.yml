@@ -1,7 +1,0 @@
-- generic [ref=e52]:
-  - generic [ref=e53]:
-    - generic [ref=e54]: Agora Tem Especialistas — Unidade Móvel 121
-    - generic [ref=e55]: "CNES: 8496234"
-  - heading "Resultado do exame" [level=2] [ref=e56]
-  - paragraph [ref=e58]: Resultado de exame ainda não disponível.
-  - button "Sair" [ref=e59] [cursor=pointer]
